@@ -1,0 +1,25 @@
+# 编译输出
+*.exe
+*.o
+*.out
+*.dll
+*.so
+*.dylib
+
+# 构建目录
+build/
+bin/
+Debug/
+Release/
+
+# IDE
+.vscode/
+.idea/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 临时文件
+*.tmp
+*.log
