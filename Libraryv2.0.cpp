@@ -1,12 +1,15 @@
 #include <iostream>
 #include "LibBook.h"
-using std::string;
-using std::cin;
-using std::cout;
-using std::endl;
+#include "LibSystem.h"
+using namespace std;
 int main()
 {
-    Book book1("978-3-16-148410-0", "C++ Programming", "John Doe");
-    book1.displayInfo();
+    System librarySystem;
+    Book myBook("978-3-16-148410-0", "C++ Programming", "John Doe");
+    librarySystem.addBook(myBook);
+    librarySystem.displayAllBooks();
+    User myUser("Alice");
+    librarySystem.addUser(myUser);
+    librarySystem.displayAllUsers();
     return 0;
 }

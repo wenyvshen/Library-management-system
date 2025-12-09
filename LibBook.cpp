@@ -1,13 +1,15 @@
 #include "LibBook.h"
 #include <iostream>
-using std::string;
-using std::cin;
-using std::cout;
-using std::endl;
+#include <fstream>
+using namespace std;
 
 // 构造函数实现
 Book::Book(string isbn, string title, string author)
-    : isbn(isbn), title(title), author(author), StorageAddress(0) {}
+    : isbn(isbn), title(title), author(author), StorageAddress(0)
+{
+    fstream file;
+    file.open("Book.txt",ios::app|ios::binary);
+}
 
 void Book::displayInfo() const
 {
