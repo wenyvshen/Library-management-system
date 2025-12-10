@@ -11,14 +11,13 @@ public:
     Book(string isbn, string title, string author);
     
     void displayInfo() const;
-    void setStorageAddress(int address);
-    int getStorageAddress() const;
+    void saveToFile() const;
+    void loadFromFile();  
 
 private:
     string isbn;          // ISBN码
     string title;         // 标题
     string author;        // 作者
-    int StorageAddress;   // 存储地址
 };
 
 #endif

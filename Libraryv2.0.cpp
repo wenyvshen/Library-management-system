@@ -5,10 +5,12 @@ using namespace std;
 int main()
 {
     System librarySystem;
-    Book myBook("978-3-16-148410-0", "C++ Programming", "John Doe");
+    Book myBook;
+    myBook.loadFromFile();
     librarySystem.addBook(myBook);
     librarySystem.displayAllBooks();
-    User myUser("Alice");
+    User myUser;
+    myUser.loadFromFile();
     librarySystem.addUser(myUser);
     librarySystem.displayAllUsers();
     return 0;
