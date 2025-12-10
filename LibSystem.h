@@ -16,9 +16,15 @@ public:
     void displayAllBooks() const;    
     void addUser(const User& user);
     void displayAllUsers() const;
+    void UserLogin(const string& username, const string& password);
+    void UserLogout(const string& username);
+    void SaveData() const;
+    void LoadData();
+    bool isUserLoggedIn(const string& username) const;
+    string getLoggedInUsername() const;
 private:
-    std::vector<Book> books;  // 图书集合
-    std::vector<User> users;  // 用户集合
+    vector<Book> books;  // 图书集合
+    vector<User> users;  // 用户集合
 
 };
 

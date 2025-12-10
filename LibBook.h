@@ -13,11 +13,17 @@ public:
     void displayInfo() const;
     void saveToFile() const;
     void loadFromFile();  
+    void setQuantity(int qty);
+    string getIsbn() const;
+    string getTitle() const;
+    string getAuthor() const;
 
 private:
     string isbn;          // ISBN码
     string title;         // 标题
     string author;        // 作者
+    int quantity;      // 数量
+    int address;       // 存放位置
 };
 
 #endif

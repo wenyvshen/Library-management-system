@@ -6,16 +6,36 @@ using namespace std;
 
 // 构造函数实现
 Book::Book(string isbn, string title, string author)
-    : isbn(isbn), title(title), author(author){}
+    : isbn(isbn), title(title), author(author), quantity(0), address(0) {}
 
 void Book::displayInfo() const
 {
     cout << "ISBN: " << isbn << endl;
     cout << "Title: " << title << endl;
     cout << "Author: " << author << endl;
+    cout << "Quantity: " << quantity << endl;
 }
 
-void Book::saveToFile() const
+void Book::setQuantity(int qty)
+{
+    quantity = qty;
+}
+
+string Book::getIsbn() const
+{
+    return isbn;
+}
+
+string Book::getTitle() const
+{
+    return title;
+}
+
+string Book::getAuthor() const  
+{
+    return author;
+}
+/*void Book::saveToFile() const
 {
     char t_isbn[20];
     char t_title[100];
@@ -25,7 +45,7 @@ void Book::saveToFile() const
     strcpy(t_author,author.c_str());
 
     fstream file;
-    file.open(R"(F:\library\Library-management-system\Book.dat)", ios::app | ios::binary);
+    file.open(R"(F:\library\Library-management-system\Book.dat)", ios::trunc | ios::binary);
     if (file.is_open() == false)
     {
         cerr << "Error opening file!" << endl;
@@ -58,4 +78,4 @@ void Book::loadFromFile()
     isbn = string(t_isbn);
     title = string(t_title);
     author = string(t_author);
-}; 
+}; */
