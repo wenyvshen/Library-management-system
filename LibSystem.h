@@ -13,11 +13,11 @@ class System
 public:
     // 默认构造
     System() = default;
-    // 添加图书
+    // 添加图书（同 ISBN 合并库存）
     void addBook(const Book& book);
     // 展示全部图书
     void displayAllBooks() const;    
-    // 添加用户
+    // 添加用户（注册）
     void addUser(const User& user);
     // 展示全部用户
     void displayAllUsers() const;
@@ -41,6 +41,7 @@ public:
     std::vector<Book> searchBooksByAuthor(const string& author) const;
     void borrowBook(const string& username, const string& isbn);
     const std::vector<User>& getUsers() const;
+    void returnBook(const string& username, const string& isbn);
 private:
     vector<Book> books;  // 图书集合
     vector<User> users;  // 用户集合

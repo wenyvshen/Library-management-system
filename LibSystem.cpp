@@ -5,16 +5,17 @@
 #include "LibSystem.h"
 using namespace std;
 
+// 注册用户并立即写盘
 void System::addUser(const User& user)
 {
     users.push_back(user);
-    SaveData(); // 立即持久化，防止丢数据
+    SaveData(); // 注册后立刻保存，避免丢失
 }
 
-// 添加图书；若 ISBN 已存在则累加数量
+// 添加图书；同 ISBN 合并库存
 void System::addBook(const Book& book)
 {
-    bool merged = false; // 是否已合并到现有库存
+    bool merged = false; // 同 ISBN 则合并库存
     for (auto& b : books)
     {
         if (b.getIsbn() == book.getIsbn())
@@ -28,10 +29,10 @@ void System::addBook(const Book& book)
     {
         books.push_back(book);
     }
-    SaveData();
+    SaveData(); // 新增或合并后都写盘
 }
 
-// 展示全部图书
+// 打印当前所有图书
 void System::displayAllBooks() const
 {
     for (const auto& book : books)
@@ -41,7 +42,7 @@ void System::displayAllBooks() const
     }
 }
 
-// 展示全部用户
+// 打印当前所有用户
 void System::displayAllUsers() const
 {
     for (const auto& user : users)
@@ -54,14 +55,14 @@ void System::displayAllUsers() const
 // 用户登录校验
 void System::UserLogin(const string& username, const string& password)
 {
-     bool found = false;
+    bool found = false;
     for (auto& user : users)
     {
         if (user.getName() == username)
         {
             if(password == user.getPassword())
             {
-                cout << "用户 " << username << " 登录成功。" << endl;
+                cout << "用户 " << username << " 登录成功。" << endl; // 只要密码匹配就标记登录
                 user.setisLoggedIn(true);
                 found = true;
                 break;
@@ -69,7 +70,7 @@ void System::UserLogin(const string& username, const string& password)
             else
             {
                 found = true;
-                cout << "用户 " << username << " 的密码错误。" << endl;
+                cout << "用户 " << username << " 的密码错误。" << endl; // 用户存在但密码不对
                 break;
             }
         }
@@ -87,7 +88,7 @@ void System::UserLogout(const string& username)
     {
         if (user.getName() == username)
         {
-            cout << "用户 " << username << " 已退出登录。" << endl;
+            cout << "用户 " << username << " 已退出登录。" << endl; // 简单清状态，不做额外校验
             user.setisLoggedIn(false);
             break;
         }
@@ -183,6 +184,7 @@ void System::LoadData()
 }
 
 // 判断用户是否已登录
+// 查询指定用户是否处于登录态
 bool System::isUserLoggedIn(const string& username) const
 {
     bool status = false;
@@ -197,6 +199,7 @@ bool System::isUserLoggedIn(const string& username) const
 }
 
 // 获取当前已登录的用户名（若无则返回空）
+// 返回任一已登录用户的用户名（若无则空）
 string System::getLoggedInUsername() const
 {
     for (const auto& user : users)
@@ -236,19 +239,20 @@ std::vector<Book> System::searchBooksByAuthor(const string& author) const {
     return result;
 }
 
+// 用户借阅：扣库存并记录历史
 void System::borrowBook(const string& username, const string& isbn) {
     for (auto& book : books) {
         if (book.getIsbn() == isbn) {
             if (book.getQuantity() > 0) {
-                book.setQuantity(book.getQuantity() - 1);
+                book.setQuantity(book.getQuantity() - 1); // 库存减一
                 cout << "图书《" << book.getTitle() << "》借阅成功！" << endl;
                 for (auto& u : users) {
                     if (u.getName() == username) {
-                        u.addToHistory(isbn);
+                        u.addToHistory(isbn); // 写入个人借阅历史
                         break;
                     }
                 }
-                SaveData();
+                SaveData(); // 借阅结果保存
             } else {
                 cout << "图书《" << book.getTitle() << "》库存不足，无法借阅！" << endl;
             }
@@ -258,6 +262,27 @@ void System::borrowBook(const string& username, const string& isbn) {
     cout << "未找到ISBN码为 '" << isbn << "' 的图书。" << endl;
 }
 
+// 只读访问用户列表
 const std::vector<User>& System::getUsers() const {
     return users;
+}
+
+// 用户归还：加库存并从历史移除
+void System::returnBook(const string& username, const string& isbn) {
+    for (auto& book : books) {
+        if (book.getIsbn() == isbn) {
+            book.setQuantity(book.getQuantity() + 1); // 库存加一
+            cout << "图书《" << book.getTitle() << "》归还成功！" << endl;
+            for (auto& u : users) {
+                if (u.getName() == username) 
+                {
+                    u.deleteFromHistory(isbn); // 历史中移除归还的 ISBN
+                    break;
+                }
+            }
+            SaveData(); // 归还结果保存
+            return;
+        }
+    }
+    cout << "未找到ISBN码为 '" << isbn << "' 的图书，无法归还。" << endl;
 }

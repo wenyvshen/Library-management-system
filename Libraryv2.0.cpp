@@ -9,6 +9,7 @@ using namespace std;
 #include <Windows.h>
 
 // 程序入口：负责菜单循环与用户交互
+// 程序入口：启动系统、加载数据、循环菜单
 int main()
 {
     // 设置控制台为UTF-8
@@ -31,13 +32,15 @@ int main()
     cout << "5. 显示全部图书" << endl;
     cout << "6. 搜索图书" << endl;
     cout << "7. 借阅图书" << endl;
+    cout << "8. 查看借阅记录" << endl;
+    cout << "9. 归还图书" << endl;
     cout << "0. 退出" << endl;
     cout << "请选择功能：";
     cin >> i;
    switch (i)
    {  
     //登录  
-    case 1: 
+    case 1: // 登录
         {
             string username, password;
             cout << "请输入用户名：";
@@ -48,7 +51,7 @@ int main()
             break;
         }
     //退出登录
-    case 2:
+    case 2: // 登出
         {
             string username = Loginname;
             sys.UserLogout(username);
@@ -56,7 +59,7 @@ int main()
             break;
         }
     //注册
-    case 3:
+    case 3: // 注册
         {
             string username, password;
             cout << "请输入新用户名：";
@@ -69,7 +72,7 @@ int main()
             break;
         }
     //添加图书
-    case 4:
+    case 4: // 添加图书
         {
             string isbn, title, author;
             int quantity;
@@ -87,12 +90,12 @@ int main()
             break;
         }
     //显示全部图书
-    case 5:
+    case 5: // 显示全部图书
         {
             sys.displayAllBooks();
             break;
         }
-    //搜索图书
+    // 搜索图书
     case 6:
         {
             int mode = 0;
@@ -130,7 +133,7 @@ int main()
             break;
         }
     //借阅图书
-    case 7:
+    case 7: // 借阅图书
         {
             if(Loginname=="")
             {
@@ -147,7 +150,7 @@ int main()
             }
         }
     //查看当前用户借阅记录(若管理员则查看所有，暂未实现管理员账号)
-    case 8:
+    case 8: // 查看当前用户借阅记录
         {
             if(Loginname=="")
             {
@@ -169,10 +172,28 @@ int main()
                         break;
                     }
                 }
+                break; 
+            }
+        }
+    //归还图书(暂未实现)
+    case 9: // 归还图书
+        {
+            if(Loginname=="")
+            {
+                cout<<"请先登录"<<endl;
+                break;
+            }
+            else
+            {
+                string isbn;
+                cout << "请输入你要归还图书的ISBN码" <<endl;
+                cin >> isbn;
+                sys.returnBook(Loginname, isbn);
+                break;
             }
         }
     //退出系统
-    case 0:
+    case 0: // 退出
         {
             sys.SaveData();
             cout << "正在退出系统，感谢使用！" << endl;

@@ -25,6 +25,8 @@ class User
         string getHistoryEntry(int idx) const;
         // 设置指定下标的借阅历史（用于加载文件时恢复）
         void setHistoryEntry(int idx, const string& val);
+        // 删除历史中首个匹配 ISBN
+        void deleteFromHistory(const string& isbn);
         
     private:
         string name;  // 用户名

@@ -4,7 +4,7 @@
 #include <cstring>
 using namespace std;
 
-// 构造时初始化数量为传入的值（避免被强制写成 0）
+// 构造：初始化基本信息与库存
 Book::Book(string isbn, string title, string author, int quantity)
     : isbn(isbn), title(title), author(author), quantity(quantity) {}
 

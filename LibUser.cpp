@@ -37,7 +37,6 @@ bool User::getisLoggedIn() const
     return isLoggedIn;
 }
 
-// 获取指定下标的借阅历史（已在头文件内联，保留此处空行占位以便可读性）
 void User::addToHistory(const string& isbn)
 {
     for (int i = 0; i < 100; ++i) {
@@ -48,14 +47,23 @@ void User::addToHistory(const string& isbn)
     }
 }
 
-// 获取指定下标的借阅历史（空则返回空字符串）
 string User::getHistoryEntry(int idx) const
 {
     return (idx >=0 && idx < 100) ? history[idx] : "";
 }
 
-// 设置指定下标的借阅历史（用于加载文件时恢复）
 void User::setHistoryEntry(int idx, const string& val)
 {
     if (idx >=0 && idx < 100) history[idx] = val;
 }   
+
+// 从历史里删除匹配的 ISBN（只删第一条）
+void User::deleteFromHistory(const string& isbn)
+{
+    for (int i = 0; i < 100; ++i) {
+        if (history[i] == isbn) {
+            history[i] = "";
+            break;
+        }
+    }
+}
