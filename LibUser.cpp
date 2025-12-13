@@ -2,36 +2,36 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <algorithm>
+
 using namespace std;
 
 User::User(const string name, const string password)
     : name(name), password(password), isLoggedIn(false) {}
 
-// 展示用户基本信息
 void User::displayInfo() const
 {
     cout << "用户名：" << name << endl;
+    cout << "类型：" << getType() << endl;
+    cout << "最大借阅数：" << getMaxBorrowCount() << endl;
+    cout << "最大借阅天数：" << getMaxBorrowDays() << endl;
 }
 
-// 获取用户名
 string User::getName() const
 {
     return name;
 }
 
-// 获取密码
 string User::getPassword() const
 {
     return password;
 }
 
-// 设置登录状态
 void User::setisLoggedIn(bool status)
 {
     isLoggedIn = status;
 }
 
-// 获取登录状态
 bool User::getisLoggedIn() const
 {
     return isLoggedIn;
@@ -39,31 +39,64 @@ bool User::getisLoggedIn() const
 
 void User::addToHistory(const string& isbn)
 {
-    for (int i = 0; i < 100; ++i) {
-        if (history[i].empty()) {
-            history[i] = isbn;
-            break;
-        }
-    }
+    BorrowRecord record;
+    record.isbn = isbn;
+    record.borrowDate = time(nullptr);
+    record.renewCount = 0;
+    history.push_back(record);
 }
 
-string User::getHistoryEntry(int idx) const
+const vector<BorrowRecord>& User::getHistory() const
 {
-    return (idx >=0 && idx < 100) ? history[idx] : "";
+    return history;
 }
 
-void User::setHistoryEntry(int idx, const string& val)
-{
-    if (idx >=0 && idx < 100) history[idx] = val;
-}   
-
-// 从历史里删除匹配的 ISBN（只删第一条）
 void User::deleteFromHistory(const string& isbn)
 {
-    for (int i = 0; i < 100; ++i) {
-        if (history[i] == isbn) {
-            history[i] = "";
+    for (auto it = history.begin(); it != history.end(); ++it) {
+        if (it->isbn == isbn) {
+            history.erase(it);
             break;
         }
     }
+}
+
+bool User::renewBook(const string& isbn)
+{
+    for (auto& record : history) {
+        if (record.isbn == isbn) {
+            if (record.renewCount < getMaxRenewals()) {
+                record.renewCount++;
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    return false;
+}
+
+void User::addHistoryEntry(const BorrowRecord& record)
+{
+    history.push_back(record);
+}
+
+// Student Implementation
+Student::Student(const string name, const string password)
+    : User(name, password) {}
+
+void Student::displayInfo() const
+{
+    User::displayInfo();
+    cout << "身份：学生" << endl;
+}
+
+// Teacher Implementation
+Teacher::Teacher(const string name, const string password)
+    : User(name, password) {}
+
+void Teacher::displayInfo() const
+{
+    User::displayInfo();
+    cout << "身份：教师" << endl;
 }

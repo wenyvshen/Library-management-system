@@ -5,8 +5,8 @@
 using namespace std;
 
 // 构造：初始化基本信息与库存
-Book::Book(string isbn, string title, string author, int quantity)
-    : isbn(isbn), title(title), author(author), quantity(quantity) {}
+Book::Book(string isbn, string title, string author, int quantity, bool isSpecial)
+    : isbn(isbn), title(title), author(author), quantity(quantity), isSpecial(isSpecial) {}
 
 // 打印图书基本信息
 void Book::displayInfo() const
@@ -15,6 +15,7 @@ void Book::displayInfo() const
     cout << "书名：" << title << endl;
     cout << "作者：" << author << endl;
     cout << "数量：" << quantity << endl;
+    cout << "类型：" << (isSpecial ? "特殊图书" : "普通图书") << endl;
 }
 
 // 更新库存数量
@@ -45,4 +46,10 @@ string Book::getAuthor() const
 int Book::getQuantity() const
 {
     return quantity;
+}
+
+// 返回是否为特殊图书
+bool Book::getIsSpecial() const
+{
+    return isSpecial;
 }

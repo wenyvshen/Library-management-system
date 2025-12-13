@@ -10,7 +10,7 @@ public:
     // 默认构造：生成空书籍
     Book() = default;
     // 构造：设置书籍基本信息与库存
-    Book(string isbn, string title, string author, int quantity = 0);
+    Book(string isbn, string title, string author, int quantity = 0, bool isSpecial = false);
     
     // 展示书籍信息
     void displayInfo() const;
@@ -24,12 +24,15 @@ public:
     string getAuthor() const;
     // 获取库存数量
     int getQuantity() const;
+    // 获取是否为特殊图书
+    bool getIsSpecial() const;
 
 private:
     string isbn;          // ISBN码
     string title;         // 标题
     string author;        // 作者
     int quantity;      // 数量
+    bool isSpecial;       // 是否为特殊图书
 };
 
 #endif
